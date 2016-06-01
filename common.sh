@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright (c) 2012 The Chromium OS Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -264,7 +265,7 @@ source "$COREOS_VERSION_FILE" || die "Cannot source version.txt"
 COREOS_BUILD_ID=""
 if [[ ${COREOS_OFFICIAL:-0} -ne 1 &&
     "${COREOS_VERSION_FILE}" =~ /\.repo/manifests/version.txt ]]; then
-  COREOS_BUILD_ID=$(date +%Y-%m-%d-%H%M)
+  COREOS_BUILD_ID="${SMILARTOS_VERSION}"
   COREOS_VERSION="${COREOS_VERSION_ID}+${COREOS_BUILD_ID}"
 else
   COREOS_VERSION="${COREOS_VERSION_ID}"
