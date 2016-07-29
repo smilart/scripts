@@ -191,23 +191,6 @@ generate_locales() {
   fi
 }
 
-create_user_smilart() {
-    touch ${FLAGS_chroot}/etc/create_smilart_user.sh
-    chmod +x /etc/create_smilart_user.sh
-    cat <<EOF > /tmp/smilart_sda9/etc/create_smilart_user.sh
- groupadd sudo
- useradd -G sudo,docker -m smilart
- echo "smilart:smilart" | chpasswd
- mkdir -p /data/share
- sed -i -E "/smilart/s/:[0-9]+:[0-9]+/:0:0/" /etc/passwd
- ln -s /usr/share/baselayout/hosts /etc/hosts
- ls /lib64 > /tmp/docker.log
- ls /lib64
-EOF
-    chroot "${FLAGS_chroot}" /etc/create_smilart_user.sh
-    rm ${FLAGS_chroot}/etc/create_smilart_user.sh 
-}
-
 setup_env() {
   (
     flock 200
@@ -246,9 +229,6 @@ setup_env() {
 
     # Do this early as it's slow and only needs basic mounts (above).
     generate_locales &
-     
-    # Create user smilart
-    create_user_smilart &
 
     mkdir -p "${FLAGS_chroot}/${CHROOT_TRUNK_DIR}"
     setup_mount "${FLAGS_trunk}" "--rbind" "${CHROOT_TRUNK_DIR}"
